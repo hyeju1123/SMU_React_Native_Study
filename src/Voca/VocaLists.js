@@ -18,6 +18,9 @@ class VocaLists extends Component {
     onChangeText = (unit) => {
         this.setState({unit})
     }
+    onUnitDelete = (item) => {
+        this.context.actions.handleUnitDelete(item)
+    }
     submit = () => {
         if(this.state.unit === '') alert("Please complete form")
         const unit = {
@@ -42,12 +45,29 @@ class VocaLists extends Component {
                     }
                     {
                         vocas.map((item, index) => (
-                            <TouchableWithoutFeedback onPress={() => this.navigate(item)} key={index}>
-                                <View style={styles.unitContainer}>
-                                    <Text style={styles.unit}>{item.unit}</Text>
+                            <View key={index} style={styles.unitContainer}>
+                                <TouchableWithoutFeedback onPress={() => this.navigate(item)} key={index}>
+                                    <View style={{flex: 1}}>
+                                        <Text style={styles.unit}>{item.unit}</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <View style={styles.iconContainer}>
+                                    <Ionicons 
+                                        name="pencil" 
+                                        size={30} 
+                                        color={colors.icon} 
+                                        style={{padding: 3}}
+                                    />  
+                                    <TouchableWithoutFeedback onPress={() => this.onUnitDelete(item)}>
+                                    <Ionicons 
+                                        name="trash-outline"
+                                        size={30} 
+                                        color={colors.icon} 
+                                        style={{padding: 3, paddingRight: 0}} 
+                                    />
+                                    </TouchableWithoutFeedback>
                                 </View>
-                            </TouchableWithoutFeedback>
-                            
+                            </View>
                         ))
                     }
                 </ScrollView>
@@ -74,6 +94,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     unitContainer: {
+        flexDirection: "row",
         padding: 10,
         borderBottomColor: colors.point,
         borderBottomWidth: 2
@@ -87,6 +108,9 @@ const styles = StyleSheet.create({
         //justifyContent: "flex-end",
         flexDirection: 'row',
         //alignItems: "flex-end"
+    },
+    iconContainer: {
+        flexDirection: "row"
     },
     input: {
         flex: 7,
